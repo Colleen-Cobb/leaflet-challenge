@@ -1,5 +1,5 @@
 // Store our API endpoint as queryUrl.
-var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2022-11-01&endtime=2022-12-02&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
+var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2022-11-01&endtime=2022-12-02&maxlongitude=180&minlongitude=-180&maxlatitude=90&minlatitude=-90";
 
 // Perform a GET request to the query URL/
 d3.json(queryUrl).then(function (data) {
@@ -11,6 +11,34 @@ function createFeatures(earthquakeData) {
 
   // Define a function that we want to run once for each feature in the features array.
   // Give each feature a popup that describes the place and time of the earthquake.
+
+  // for (var i = 0; i < earthquakes.length; i++) {
+
+  //   // Conditionals for country gdp_pc
+  //   var color = "";
+  //   if (earthquakes[i].features.gemoetry.coordinates[2] > 100000) {
+  //     color = "yellow";
+  //   }
+  //   else if (countries[i].features.gemoetry.coordinates[2] > 75000) {
+  //     color = "blue";
+  //   }
+  //   else if (countries[i].features.gemoetry.coordinates[2] > 50000) {
+  //     color = "green";
+  //   }
+  //   else {
+  //     color = "violet";
+  //   }
+  
+  //   // Add circles to the map.
+  //   L.circle(earthquakes[i].location, {
+  //     fillOpacity: 0.75,
+  //     color: "white",
+  //     fillColor: color,
+  //     // Adjust the radius.
+  //     radius: Math.sqrt(earthquakes[i].gdp_pc) * 500
+  //   }).bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`).addTo(myMap);
+  // }
+
   function onEachFeature(feature, layer) {
     layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
   }
