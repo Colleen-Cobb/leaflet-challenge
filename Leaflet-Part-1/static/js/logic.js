@@ -9,6 +9,53 @@ d3.json(queryUrl).then(function (data) {
 
 function createFeatures(earthquakeData) {
 
+  var markers = {};
+
+  for (var i = 0; i < earthquakeData.length; i++) {
+    
+    var lat = earthquakeData[i].geometry.coordinates[1]
+    var lng = earthquakeData[i].geometry.coordinates[0]
+    var cord = [lat, lng]
+    var depth = earthquakeData[i].geometry.coordinates[2]
+    var mag = earthquakeData[i].properties.mag 
+    var color = "",
+    if (depth < 10){
+      color = "#77FF33"
+    }
+    else if (depth < 30){
+      color = "#33FF35"
+    }
+    else if (depth < 50) {
+      color = "#FFE033"
+    }
+    else if (depth < 70) {
+      color = "#FF8E33"
+    }
+    else if (dpeth < 90) {
+      color = "#FF7133"
+    }
+    else {
+      color = "#FF4A33"
+    }
+
+    markers.push(
+      L.circle(cord, {
+        collapsed: false, 
+        fillOpacity: 0.75, 
+        color: "black",
+        fillColor: color, 
+      }) layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`)
+    )
+  }
+
+  var earthquakes = L.layerGroup(markers)
+
+  // Send our earthquakes layer to the createMap function/
+  createMap(earthquakes);
+      
+
+
+
   // Define a function that we want to run once for each feature in the features array.
   // Give each feature a popup that describes the place and time of the earthquake.
 
@@ -16,13 +63,13 @@ function createFeatures(earthquakeData) {
 
   //   // Conditionals for country gdp_pc
   //   var color = "";
-  //   if (earthquakes[i].features.gemoetry.coordinates[2] > 100000) {
+  //   if (earthquakes[i].geometry.coordinates[2] > 100000) {
   //     color = "yellow";
   //   }
-  //   else if (countries[i].features.gemoetry.coordinates[2] > 75000) {
+  //   else if (countries[i].geometry.coordinates[2] > 75000) {
   //     color = "blue";
   //   }
-  //   else if (countries[i].features.gemoetry.coordinates[2] > 50000) {
+  //   else if (countries[i].geometry.coordinates[2] > 50000) {
   //     color = "green";
   //   }
   //   else {
@@ -39,9 +86,9 @@ function createFeatures(earthquakeData) {
   //   }).bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`).addTo(myMap);
   // }
 
-  function onEachFeature(feature, layer) {
-    layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
-  }
+  // function onEachFeature(feature, layer) {
+  //   layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
+  // }
 
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
@@ -49,8 +96,7 @@ function createFeatures(earthquakeData) {
     onEachFeature: onEachFeature
   });
 
-  // Send our earthquakes layer to the createMap function/
-  createMap(earthquakes);
+
 }
 
 function createMap(earthquakes) {
