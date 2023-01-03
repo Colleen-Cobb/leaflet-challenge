@@ -9,7 +9,7 @@ d3.json(queryUrl).then(function (data) {
 
 function createFeatures(earthquakeData) {
 
-  var markers = {};
+  var markers = [];
 
   for (var i = 0; i < earthquakeData.length; i++) {
     
@@ -18,7 +18,7 @@ function createFeatures(earthquakeData) {
     var cord = [lat, lng]
     var depth = earthquakeData[i].geometry.coordinates[2]
     var mag = earthquakeData[i].properties.mag 
-    var color = "",
+    var color = "";
     if (depth < 10){
       color = "#77FF33"
     }
@@ -31,7 +31,7 @@ function createFeatures(earthquakeData) {
     else if (depth < 70) {
       color = "#FF8E33"
     }
-    else if (dpeth < 90) {
+    else if (depth < 90) {
       color = "#FF7133"
     }
     else {
@@ -44,7 +44,7 @@ function createFeatures(earthquakeData) {
         fillOpacity: 0.75, 
         color: "black",
         fillColor: color, 
-      }) layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`)
+      }).bindPopup(`<h3>${earthquakeData[i].properties.place}</h3><hr><p>${new Date(earthquakeData[i].properties.time)}</p>`)
     )
   }
 
@@ -52,6 +52,19 @@ function createFeatures(earthquakeData) {
 
   // Send our earthquakes layer to the createMap function/
   createMap(earthquakes);
+
+
+
+  // Create a legend for the map
+  // var legend = L.control({
+  //   position: "bottomright",
+  //   fillColor: "white",
+  //   title: "Earthquake Depth",
+  //   collapsed: false
+  //   // legend: [{
+  //   //   labels: ["<10", "10-30", "30-50", "50-70", "70-90", "90+"
+  //   })]
+  // })
       
 
 
@@ -86,9 +99,6 @@ function createFeatures(earthquakeData) {
   //   }).bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`).addTo(myMap);
   // }
 
-  // function onEachFeature(feature, layer) {
-  //   layer.bindPopup(`<h3>${feature.properties.place}</h3><hr><p>${new Date(feature.properties.time)}</p>`);
-  // }
 
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
@@ -136,5 +146,33 @@ function createMap(earthquakes) {
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+
+  function legnedColors(depth){
+    if (depth < 10){
+      color = "#77FF33"
+    }
+    else if (depth < 30){
+      color = "#33FF35"
+    }
+    else if (depth < 50) {
+      color = "#FFE033"
+    }
+    else if (depth < 70) {
+      color = "#FF8E33"
+    }
+    else if (depth < 90) {
+      color = "#FF7133"
+    }
+    else {
+      color = "#FF4A33"
+    }
+  }
+
+  var legend = L.control({
+    position: "bottomright",
+    fillcolor: "white", 
+    collapsed: false, 
+    title: "Earthquake Depth"
+  });
 
 }
