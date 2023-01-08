@@ -46,7 +46,8 @@ function createEarthquakes(earthquakeData) {
         color: "black",
         fillColor: color, 
         radius: mag *10000
-      }).bindPopup(`<h3>${earthquakeData[i].properties.place}</h3><hr><p>${new Date(earthquakeData[i].properties.time)}</p>`)
+      }).bindPopup(`<h3>${earthquakeData[i].properties.place}</h3><hr><p><h2>Depth: ${(earthquakeData[i].geometry.coordinates[2])} km</h2></p><p><h2>Magnitude: ${(earthquakeData[i].properties.mag)}</h2></p>
+      `)
     )
   }
 
